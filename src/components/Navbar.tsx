@@ -4,147 +4,147 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import logo from "@/assets/logo.png";
+import { useWorkout } from "@/context/WorkoutContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const { todayPlan, savedWorkouts } = useWorkout();
 
   return (
     <nav className="fixed left-0 right-0 top-0 z-50 border-b border-[#1c1d20] bg-[#0b0c0e]">
-      {/* Main Navbar */}
-      <div className="mx-auto flex h-11 max-w-7xl items-center justify-between px-5">
+      <div className="mx-auto flex w-full max-w-[1320px] items-center justify-between px-5 py-4">
+
         {/* Logo */}
         <Link
           href="/"
-          onClick={closeMenu}
-          className="flex items-center gap-1.5"
-        >
+          className="flex shrink-0 items-center gap-2"
+          >
           <Image
-            src={logo}
-            alt="FitLog Logo"
-            width={22}
-            height={22}
-            priority
-            className="h-[22px] w-[22px]"
+          src={logo}
+          alt="FitLog"
+          className="h-7 w-auto"
+          priority
           />
-
-          <span className="font-[Oswald] text-[11px] font-bold tracking-wide text-white">
-            FITLOG
+          <span className="font-[Oswald] text-[13px] font-bold tracking-wide text-white">
+           FITLOG
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
+
+          {/* Workouts */}
           <Link
-            href="/"
-            className="rounded-full bg-[#1b2610] px-3 py-1 text-[9px] font-medium text-[#c2f800] transition hover:bg-[#253716]"
+            href="/#library"
+            className="rounded-2xl bg-[#a1d513] px-4 py-[9px] text-[10px] font-semibold text-white transition hover:text-[#c2f800]"
           >
-            Workouts
+            WORKOUTS
           </Link>
 
+          {/* My Plan */}
           <Link
             href="/my-plan"
-            className="rounded-full px-2 py-1 text-[9px] font-medium text-[#85878b] transition hover:text-white"
+            className="rounded-md px-4 py-[9px] text-[10px] font-semibold text-[#85878b] transition hover:text-white"
           >
-            My Plan
+            MY PLAN
           </Link>
+
         </div>
 
-        {/* Desktop Counters */}
+        {/* Desktop Status */}
         <div className="hidden items-center gap-4 md:flex">
+
+          {/* Plan */}
           <Link
             href="/my-plan"
-            className="flex items-center gap-1.5 text-[8px] font-medium text-[#b5b6b8] transition hover:text-white"
+            className="flex items-center gap-1.5 text-[9px] font-semibold text-[#85878b] transition hover:text-white"
           >
-            <span>Plan</span>
+            <span>PLAN</span>
 
-            <span className="flex h-[13px] w-[13px] items-center justify-center rounded-full bg-[#c2f800] text-[7px] font-bold text-black">
-              0
+            <span className="flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-[#c2f800] px-1 text-[8px] font-bold text-black">
+              {todayPlan.length}
             </span>
           </Link>
 
+          {/* Saved */}
           <Link
             href="/my-plan"
-            className="flex items-center gap-1.5 text-[8px] font-medium text-[#85878b] transition hover:text-white"
+            className="flex items-center gap-1.5 text-[9px] font-semibold text-[#85878b] transition hover:text-white"
           >
-            <span>Saved</span>
+            <span>SAVED</span>
 
-            <span className="flex h-[13px] w-[13px] items-center justify-center rounded-full border border-[#303238] text-[7px] text-[#b5b6b8]">
-              0
+            <span className="flex h-[20px] min-w-[20px] items-center justify-center rounded-full border border-[#36383e] px-1 text-[8px] font-bold text-white">
+              {savedWorkouts.length}
             </span>
           </Link>
+
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Menu Button */}
         <button
           type="button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex h-7 w-7 flex-col items-center justify-center gap-[3px] rounded-md border border-[#292b30] md:hidden"
+          onClick={() => setIsMenuOpen((value) => !value)}
+          className="text-xl text-white md:hidden"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
-          <span className="block h-[1px] w-3.5 bg-white" />
-          <span className="block h-[1px] w-3.5 bg-white" />
-          <span className="block h-[1px] w-3.5 bg-white" />
+          ☰
         </button>
-      </div>
 
-      {/* Mobile Dropdown Menu */}
-      {isMenuOpen && (
-        <div className="absolute right-5 top-14 z-50 w-40 rounded-xl border border-[#1c1d20] bg-[#111214] p-2 shadow-2xl md:hidden">
-          <div className="flex flex-col gap-1">
+        {/* Mobile Dropdown */}
+        {isMenuOpen && (
+          <div className="absolute right-5 top-[45px] w-44 rounded-lg border border-[#24262b] bg-[#15171c] p-2 shadow-xl md:hidden">
+
             {/* Workouts */}
             <Link
-              href="/"
-              onClick={closeMenu}
-              className="rounded-lg px-3 py-2 text-[10px] font-medium text-[#c2f800] transition hover:bg-[#1b2610]"
+              href="/#library"
+              onClick={() => setIsMenuOpen(false)}
+              className="block rounded-md px-3 py-2.5 text-[10px] font-semibold text-white transition hover:bg-[#1c1f24] hover:text-[#c2f800]"
             >
-              Workouts
+              WORKOUTS
             </Link>
 
             {/* My Plan */}
             <Link
               href="/my-plan"
-              onClick={closeMenu}
-              className="rounded-lg px-3 py-2 text-[10px] font-medium text-[#85878b] transition hover:bg-[#18191b] hover:text-white"
+              onClick={() => setIsMenuOpen(false)}
+              className="block rounded-md px-3 py-2.5 text-[10px] font-semibold text-[#85878b] transition hover:bg-[#1c1f24] hover:text-white"
             >
-              My Plan
+              MY PLAN
             </Link>
 
-            {/* Divider */}
-            <div className="my-1 h-px bg-[#1c1d20]" />
+            <div className="my-2 border-t border-[#24262b]" />
 
             {/* Plan */}
             <Link
               href="/my-plan"
-              onClick={closeMenu}
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-[10px] text-[#b5b6b8] transition hover:bg-[#18191b]"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-between rounded-md px-3 py-2.5 text-[10px] font-semibold text-[#85878b] transition hover:bg-[#1c1f24] hover:text-white"
             >
-              <span>Plan</span>
+              <span>PLAN</span>
 
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c2f800] text-[8px] font-bold text-black">
-                0
+              <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#c2f800] px-1 text-[9px] font-bold text-black">
+                {todayPlan.length}
               </span>
             </Link>
 
             {/* Saved */}
             <Link
               href="/my-plan"
-              onClick={closeMenu}
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-[10px] text-[#85878b] transition hover:bg-[#18191b] hover:text-white"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-between rounded-md px-3 py-2.5 text-[10px] font-semibold text-[#85878b] transition hover:bg-[#1c1f24] hover:text-white"
             >
-              <span>Saved</span>
+              <span>SAVED</span>
 
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#303238] text-[8px] text-[#b5b6b8]">
-                0
+              <span className="flex h-6 min-w-6 items-center justify-center rounded-full border border-[#36383e] px-1 text-[9px] font-bold text-white">
+                {savedWorkouts.length}
               </span>
             </Link>
+
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 }
